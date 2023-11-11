@@ -5,7 +5,12 @@
 /.pnp
 .pnp.js
 
+
+
 .env
+/.firebase
+
+/.firebase.json
 
 settings.py
 

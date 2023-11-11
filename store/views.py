@@ -28,7 +28,6 @@ class ProductPurchaseException(APIException):
 
 
 def log_error(error_name, error_message, product):
-    # Log error by writing structured JSON. Can be then used with log-based alerting, metrics, etc.
     print(
         json.dumps(
             {
