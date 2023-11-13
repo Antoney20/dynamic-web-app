@@ -10,11 +10,11 @@ from django.views.decorators.http import require_http_methods
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-from store.models import Product, SiteConfig, Testimonial, Transaction
-from store.serializers import ( ProductSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,)
+from store.models import Product, SiteConfig, Testimonial, Transaction, Brands, AboutUs, ContactUs
+from store.serializers import ( ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
 
 def csrf_token(request):
     return JsonResponse({"csrfToken": get_token(request)})
@@ -81,6 +81,43 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+    
+    
+class BrandsView(viewsets.ModelViewSet):
+    queryset = Brands.objects.all()
+    serializer_class = BrandSerializer
+    #handle exceptions
+    class BrandsException(APIException):
+        status_code = 405
+        default_detail = {
+            "code": status_code,
+            "message": "Unable to load the available brands. Or they are no brands available",
+        }
+    @action(detail=True, methods=["get", "post"])
+    def brands(self, request, pk):
+        brand = get_object_or_404(Brand, id=pk)
+
+        if brand.available_count > 1:
+            # Return all available brands
+            brands = Brand.objects.all()
+            serializer = self.get_serializer(brands, many=True)
+            return Response(serializer.data)
+        elif brand.available_count == 1:
+            # Return only the selected brand
+            serializer = self.get_serializer(brand)
+            return Response(serializer.data)
+        else:
+            # No available listed brands, return the above brands with exception
+            raise self.BrandsException
+
+@ensure_csrf_cookie
+@api_view(['POST'])
+def contact_us_view(request):
+    serializer = ContactUsSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ActiveProductViewSet(viewsets.ViewSet):

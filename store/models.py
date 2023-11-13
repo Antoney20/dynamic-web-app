@@ -38,6 +38,12 @@ class Product(models.Model):
             qs.update(active=False)
 
         super(Product, self).save(*args, **kwargs)
+    
+class Brands(models.Model):
+    name = models.CharField( max_length=50, blank= False, null = False) 
+    Descriprion = models.CharField( max_length=50)
+    image = models.FileField( upload_to="Brands", max_length=100,  blank=True, null=True)
+    
 
 
 class Testimonial(models.Model):
@@ -52,6 +58,33 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f"{self.rating} star review on {self.product_id.name} from {self.reviewer_name}"
+
+
+
+
+class AboutUs(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    image = models.ImageField(upload_to='about_us/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+    
+    #contact us form
+class ContactUs(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Contact Us: {self.subject} - {self.name}"
+
+
+
 
 
 class Transaction(models.Model):

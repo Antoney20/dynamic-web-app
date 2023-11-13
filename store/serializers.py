@@ -1,7 +1,7 @@
 import json
 
 from rest_framework import serializers
-from store.models import Product, SiteConfig, Testimonial
+from store.models import Product, SiteConfig, Testimonial, Brands, AboutUs, ContactUs
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -49,7 +49,40 @@ class SiteConfigSerializer(serializers.ModelSerializer):
             "site_name_color",
             "base_font",
         ]
+        
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brands
+        fields = [
+            "id",
+            "name",
+            "Description",
+            "image",
+        ]
+        
+class AboutUsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AboutUs
+        fields = [
+            "id",
+            "tittle",
+            "content",
+            "image",
+            "created_at",
+            "updated_at",
+        ]
 
+class ContactUsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactUs
+        fields = [
+            "id",
+            "name",
+            "email",
+            "subject",
+            "message",
+            "created_at",
+        ]
 
 class CartPaymentSerializer(serializers.Serializer):
     method = serializers.ChoiceField(choices=["collect"])
