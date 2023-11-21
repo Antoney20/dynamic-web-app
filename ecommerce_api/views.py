@@ -10,6 +10,7 @@ def index(request):
         <ul>
             <li><a href="/api">/api</a></li>
             <li><a href="/admin">/admin</a></li>
+             <li><a href="/blog">/blog</a></li>
         </ul>
     </body>
     """)
