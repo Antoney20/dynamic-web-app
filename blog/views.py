@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Post
-
+from django.http import HttpResponse
 from blog.serializers import PostSerializer
 from django.shortcuts import get_object_or_404
 # django rest framework. DRF
