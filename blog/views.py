@@ -10,12 +10,6 @@ from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 
 # Create your views here.
-
-def index(request):
-    return HttpResponse('welcome blog')
-def post(request):
-    return HttpResponse('lets post')
-    
     
     
 class BlogView(viewsets.ModelViewSet):

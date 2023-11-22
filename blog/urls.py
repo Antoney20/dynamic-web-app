@@ -1,7 +1,10 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import BlogView
+
+router = DefaultRouter()
+router.register(r'posts', BlogView, basename='blog')
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('post/<str:pk>', views.post, name='post')
+    path('', include(router.urls)),
 ]
