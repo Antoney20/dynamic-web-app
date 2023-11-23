@@ -2,7 +2,7 @@ from django.urls import include, path
 from . import views
 from rest_framework.routers import DefaultRouter
 
-from store import views
+from .views import signup
 
 
 router = DefaultRouter()
@@ -26,4 +26,5 @@ urlpatterns = [
     path("csrf_token", views.csrf_token, name="csrf_token"),
     path('contact-us/', views.contact_us_view, name='contact_us_view'),
     path("api-auth/", include("rest_framework.urls")),
+    path('signup/', signup, name='signup'),
 ]

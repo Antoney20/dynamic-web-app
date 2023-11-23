@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django.contrib.auth.models import User
+
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -10,14 +13,50 @@ from django.views.decorators.http import require_http_methods
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action, api_view,permission_classes
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
 from store.models import Product, SiteConfig, Testimonial, Transaction, Brands, AboutUs, ContactUs
-from store.serializers import ( ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
+from store.serializers import ( UserSerializer, ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
+
+
+@api_view(['POST'])
+def signup(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    user = User.objects.create_user(username=username, email=email, password=password)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def login_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    else:
+        return Response({'error': 'Invalid credentials'}, status=401)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_view(request):
+    logout(request)
+    return Response({'message': 'Logout successful'})
 
 def csrf_token(request):
     return JsonResponse({"csrfToken": get_token(request)})
+
+
+
 
 class ProductPurchaseException(APIException):
     status_code = 405

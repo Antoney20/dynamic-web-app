@@ -2,6 +2,27 @@ import json
 
 from rest_framework import serializers
 from store.models import Product, SiteConfig, Testimonial, Brands, AboutUs, ContactUs
+from django.contrib.auth.models import User
+
+from .models import Profile
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'profile']
+
+    def create(self, validated_data):
+        profile_data = validated_data.pop('profile')
+        user = User.objects.create_user(**validated_data)
+        Profile.objects.create(user=user, **profile_data)
+        return user
 
 
 class ProductSerializer(serializers.ModelSerializer):

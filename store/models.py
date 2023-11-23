@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 from decimal import Decimal
@@ -7,6 +7,14 @@ from decimal import Decimal
 from colorfield.fields import ColorField
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email_verified = models.BooleanField(default=False)
+    image = models.ImageField(upload_to="profiles", blank=True, null=True)
+    description = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.user.username
 
 class Product(models.Model):
     name = models.CharField(max_length=64, unique=True)
