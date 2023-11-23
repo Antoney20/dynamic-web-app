@@ -38,4 +38,4 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ("datetime", "product_id")
     
     
-admin.register(Testimonial)
+admin.site.register(Testimonial)
