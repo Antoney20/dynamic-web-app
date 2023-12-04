@@ -11,11 +11,11 @@ class Banner (models.Model):
     name = models.CharField(max_length=64, unique=True)
     text = models.CharField(max_length=64)
     description = models.CharField(max_length=64)
-    image = models.ImageField(upload_to="banner", blank=False, null=True)
+    image = models.ImageField(upload_to="Banner", blank=False, null=True)
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email_verified = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="profiles", blank=True, null=True)
+    image = models.ImageField(upload_to="Profiles", blank=True, null=True)
     description = models.CharField(max_length=1000)
 
     def __str__(self):

@@ -15,6 +15,7 @@ router.get_api_root_view().cls.__doc__ = (
 router.register(r"products", views.ProductViewSet, basename="product")
 #brands
 router.register(r"Brands", views.BrandsView, basename="brand")
+router.register(r"banner", views.bannerView, basename="banner")
 router.register( r"active/product", views.ActiveProductViewSet, basename="active_product")
 router.register(r"testimonials", views.TestimonialViewSet, basename="testimonial")
 router.register(r"site_config", views.SiteConfigViewSet, basename="site_config")

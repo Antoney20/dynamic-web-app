@@ -18,8 +18,8 @@ from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from store.models import Product, SiteConfig, Testimonial, Transaction, Brands, AboutUs, ContactUs
-from store.serializers import ( UserSerializer, ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
+from store.models import Product, Banner, SiteConfig, Testimonial, Transaction, Brands, AboutUs, ContactUs
+from store.serializers import ( UserSerializer, BannerSerializer, ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
 
 
 @api_view(['POST'])
@@ -120,6 +120,34 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+    
+class bannerView(viewsets.ModelViewSet):
+    queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+    #handle exceptions
+    class BrandsException(APIException):
+        status_code = 405
+        default_detail = {
+            "code": status_code,
+            "message": "Unable to load the available brands. Or they are no brands available",
+        }
+    @action(detail=True, methods=["get", "post"])
+    def banner(self, request, pk):
+        banner = get_object_or_404(Banner, id=pk)
+
+        if banner.available_count > 1:
+            # Return all available banner 
+            brands = Brand.objects.all()
+            serializer = self.get_serializer(banner, many=True)
+            return Response(serializer.data)
+        elif banner.available_count == 1:
+            # Return only the selected banner
+            serializer = self.get_serializer(banner)
+            return Response(serializer.data)
+        else:
+            # No available listed banner,  return the above brands with exception
+            raise self.BrandsException
+
     
     
 class BrandsView(viewsets.ModelViewSet):

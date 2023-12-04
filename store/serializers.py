@@ -1,10 +1,16 @@
 import json
 
 from rest_framework import serializers
-from store.models import Product, SiteConfig, Testimonial, Brands, AboutUs, ContactUs
+from store.models import Banner,Product, SiteConfig, Testimonial, Brands, AboutUs, ContactUs
 from django.contrib.auth.models import User
 
 from .models import Profile
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = '__all__'
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
