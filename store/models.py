@@ -7,6 +7,11 @@ from decimal import Decimal
 from colorfield.fields import ColorField
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+class Banner (models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    text = models.CharField(max_length=64)
+    description = models.CharField(max_length=64)
+    image = models.ImageField(upload_to="banner", blank=False, null=True)
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email_verified = models.BooleanField(default=False)
