@@ -26,7 +26,7 @@ urlpatterns = [
     path("checkout", views.checkout, name="checkout"),
     path("csrf_token", views.csrf_token, name="csrf_token"),
     path('contact-us/', views.contact_us_view, name='contact_us_view'),
-    path('api/product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('api/Product/<int:pk>/', ProductDetailView.as_view(), name='Product'),
     path("api-auth/", include("rest_framework.urls")),
     path('signup/', signup, name='signup'),
 ]
