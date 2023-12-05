@@ -3,10 +3,12 @@ from django.contrib import admin
 # Register your models here.
 from django.utils.html import format_html
 
-from store.models import Product, SiteConfig, Testimonial, Transaction
+from store.models import Product, SiteConfig, Testimonial, Transaction,Banner
 from blog.models import Post
 
 admin.site.register(Post)
+
+admin.site.register(Banner)
 
 
 @admin.register(Product)

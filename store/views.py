@@ -17,6 +17,7 @@ from rest_framework.decorators import action, api_view,permission_classes
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
 
 from store.models import Product, Banner, SiteConfig, Testimonial, Transaction, Brands, AboutUs, ContactUs
 from store.serializers import ( UserSerializer, BannerSerializer, ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
@@ -120,6 +121,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+    
+    
+class ProductDetailView(RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
     
 class bannerView(viewsets.ModelViewSet):
     queryset = Banner.objects.all()
