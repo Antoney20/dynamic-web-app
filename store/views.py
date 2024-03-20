@@ -18,9 +18,12 @@ from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveAPIView
+from rest_framework import status
 
 from store.models import Product, Banner, SiteConfig, Testimonial, Transaction, Brands, AboutUs, ContactUs
-from store.serializers import ( UserSerializer, BannerSerializer, ProductSerializer,BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
+from store.serializers import ( UserSerializer, BannerSerializer, ProductSerializer,
+                               BrandSerializer,SiteConfigSerializer,TestimonialSerializer,CartSerializer,
+                               CheckoutSerializer,AboutUsSerializer, ContactUsSerializer)
 
 
 @api_view(['POST'])
@@ -183,7 +186,6 @@ class BrandsView(viewsets.ModelViewSet):
             # No available listed brands, return the above brands with exception
             raise self.BrandsException
 
-@ensure_csrf_cookie
 @api_view(['POST'])
 def contact_us_view(request):
     serializer = ContactUsSerializer(data=request.data)

@@ -17,6 +17,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
 
+class ContactUsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AboutUs
+        fields = '__all__'
+
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
 
@@ -96,7 +101,7 @@ class AboutUsSerializer(serializers.ModelSerializer):
             "content",
             "image",
             "created_at",
-            "updated_at",
+           
         ]
 
 class ContactUsSerializer(serializers.ModelSerializer):
@@ -108,7 +113,6 @@ class ContactUsSerializer(serializers.ModelSerializer):
             "email",
             "subject",
             "message",
-            "created_at",
         ]
 
 class CartPaymentSerializer(serializers.Serializer):
